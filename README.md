@@ -26,8 +26,13 @@ every file has an `owner` and either a `redirect` or `records`.
 
 ```json
 {
-  "owner": { "github": "yourname" },
-  "redirect": { "type": "bot", "value": "123456789012345678" }
+  "owner": {
+    "github": "yourname"
+  },
+  "redirect": {
+    "type": "bot",
+    "value": "123456789012345678"
+  }
 }
 ```
 
@@ -38,8 +43,13 @@ want specific scopes or permissions.
 
 ```json
 {
-  "owner": { "github": "yourname" },
-  "redirect": { "type": "server", "value": "https://discord.gg/abc123" }
+  "owner": {
+    "github": "yourname"
+  },
+  "redirect": {
+    "type": "server",
+    "value": "https://discord.gg/abc123"
+  }
 }
 ```
 
@@ -49,8 +59,13 @@ an invite code (`abc123`) works too. use an invite that doesn't expire.
 
 ```json
 {
-  "owner": { "github": "yourname" },
-  "redirect": { "type": "url", "value": "https://example.com/my-project" }
+  "owner": {
+    "github": "yourname"
+  },
+  "redirect": {
+    "type": "url",
+    "value": "https://example.com/my-project"
+  }
 }
 ```
 
@@ -60,8 +75,16 @@ https only, and not back to invite-to.me.
 
 ```json
 {
-  "owner": { "github": "yourname" },
-  "records": [{ "type": "CNAME", "host": "@", "content": "cname.vercel-dns.com" }]
+  "owner": {
+    "github": "yourname"
+  },
+  "records": [
+    {
+      "type": "CNAME",
+      "host": "@",
+      "content": "cname.vercel-dns.com"
+    }
+  ]
 }
 ```
 
@@ -71,8 +94,16 @@ then add `yourname.invite-to.me` as a domain in your vercel project.
 
 ```json
 {
-  "owner": { "github": "yourname" },
-  "records": [{ "type": "CNAME", "host": "@", "content": "yourname.github.io" }]
+  "owner": {
+    "github": "yourname"
+  },
+  "records": [
+    {
+      "type": "CNAME",
+      "host": "@",
+      "content": "yourname.github.io"
+    }
+  ]
 }
 ```
 
@@ -82,11 +113,22 @@ then set the custom domain in your repo's pages settings.
 
 ```json
 {
-  "owner": { "github": "yourname", "discord": "yourname" },
+  "owner": {
+    "github": "yourname",
+    "discord": "yourname"
+  },
   "description": "my bot's dashboard",
   "records": [
-    { "type": "A", "host": "@", "content": "203.0.113.10" },
-    { "type": "TXT", "host": "_discord", "content": "dh=your-discord-verification-value" }
+    {
+      "type": "A",
+      "host": "@",
+      "content": "203.0.113.10"
+    },
+    {
+      "type": "TXT",
+      "host": "_discord",
+      "content": "dh=your-discord-verification-value"
+    }
   ]
 }
 ```
