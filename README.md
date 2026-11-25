@@ -15,7 +15,9 @@ here with a pull request. both end up in the same place and count toward the sam
 
 names are 3 to 32 characters: `a-z`, `0-9` and hyphens, not starting or ending with a
 hyphen and no double hyphens. some names (`www`, `api`, `docs`, `mail`, `discord`, ...)
-are reserved.
+are reserved, and names that pass for a brand or a popular bot (`d1scord`, `steam-gift`,
+`mee6-verify`, ...) are refused. a name that was just removed can't be taken by someone
+else for 30 days, so old links never start pointing at a stranger's page.
 
 ## the file
 
