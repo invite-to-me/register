@@ -1,0 +1,47 @@
+name: check
+
+# runs on every pull request. no secrets are needed or available here:
+# the check script asks the public invite-to.me api whether the change is ok.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: checkout the pull request
+        uses: actions/checkout@v4
+        with:
+          path: pr
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      # the script comes from the base branch, so a pr can't change the rules
+      # it's checked against
+      - name: checkout the check script from main
+        uses: actions/checkout@v4
+        with:
+          path: trusted
+          ref: ${{ github.event.pull_request.base.sha }}
+          sparse-checkout: scripts
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: check the changed names
+        working-directory: pr
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_AUTHOR_LOGIN: ${{ github.event.pull_request.user.login }}
+          PR_AUTHOR_ID: ${{ github.event.pull_request.user.id }}
+          MAINTAINERS: ${{ vars.MAINTAINERS }}
+          API_URL: ${{ vars.API_URL }}
+        run: node ../trusted/scripts/check.mjs

@@ -1,0 +1,45 @@
+name: sync
+
+# after a merge, send every domain file to invite-to.me so dns and redirects
+# match the repo. the daily run fixes anything that drifted.
+on:
+  push:
+    branches: [main]
+    paths: ["domains/**"]
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: allow a sync that removes a lot of names at once
+        type: boolean
+        default: false
+
+# one sync at a time, never cancel one halfway
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: sync names to invite-to.me
+        env:
+          API_URL: ${{ vars.API_URL }}
+          REGISTRY_SYNC_TOKEN: ${{ secrets.REGISTRY_SYNC_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          FORCE: ${{ inputs.force && '1' || '0' }}
+        run: node scripts/sync.mjs
